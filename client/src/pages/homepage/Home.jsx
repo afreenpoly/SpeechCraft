@@ -28,7 +28,13 @@ function Home() {
               </button>
 
               <a href="#">Forgotten password?</a>
-              <a href="#">Create new account</a>
+              <button
+                type="submit"
+                className="btn"
+                style={{ backgroundColor: "#53CE2B", color: "white" }}
+              >
+                Create New Account
+              </button>
             </div>
           </div>
         </div>
