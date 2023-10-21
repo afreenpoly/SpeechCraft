@@ -3,13 +3,13 @@ import Card from "../../../components/Card";
 
 function Dashboard() {
   return (
-    <div className="p-2">
+    <div className="pb-4">
       {/* First Section */}
-      <h2 className="text-2xl font-semibold text-center my-6">Learning</h2>
+      <h2 className="text-2xl font-semibold text-center mb-4">Learning</h2>
       <div className="flex space-x-36 justify-center">
-        <Card name="Alphabets" color="red" link="/example-1" />
-        <Card name="Words" color="blue" link="/example-1" />
-        <Card name="Sentence" color="green" link="/example-1" />
+        <Card name="Alphabets" color="red" link="/user/learning/alphabets" />
+        <Card name="Words" color="blue" link="/user/learning/words" />
+        <Card name="Sentences" color="green" link="/user/learning/sentences" />
       </div>
 
       {/* Divider Line */}
@@ -18,8 +18,16 @@ function Dashboard() {
       {/* Second Section */}
       <h2 className="text-2xl font-semibold text-center my-6"> Practise</h2>
       <div className="flex space-x-36 justify-center">
-        <Card name="Flash Card" color="green" link="/example-1" />
-        <Card name="Challenge" color="red" link="/example-1" />
+        <Card
+          name="Flash Card"
+          color="green"
+          link="/user/challenges/flashCard"
+        />
+        <Card
+          name="Multiplayer Mode"
+          color="red"
+          link="/user/challenges/multiplayer"
+        />
       </div>
     </div>
   );
