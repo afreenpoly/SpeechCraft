@@ -56,11 +56,11 @@ const FlashCard = () => {
         {showFrenchTranslation ? "English Word" : "French Translation"}
       </h1>
       <div className="text-2xl my-4 flex items-center justify-center">
-        {showFrenchTranslation ? (
-          <SpinningCard Content={englishWord} />
-        ) : (
-          <SpinningCard Content={frenchTranslation} />
-        )}
+        <SpinningCard
+          frontContent={frenchTranslation}
+          backContent={englishWord}
+          spin={showFrenchTranslation}
+        />
       </div>
       <button
         onClick={nextWord}
