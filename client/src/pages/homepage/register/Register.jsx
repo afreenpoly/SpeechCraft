@@ -1,14 +1,26 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Register() {
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate("/user");
-  };
+    const firstName = document.getElementById("firstName").value;
+    const lastName = document.getElementById("lastName").value;
+    const dob = document.getElementById("dob").value;
+    const knownLanguage = document.getElementById("knownLanguage").value;
 
+    axios.post("/register", {
+      first_name: firstName,
+      last_name: lastName,
+      dob: dob,
+      known_language: knownLanguage,
+    }).then(() => {
+      navigate("/user");
+    });
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-1/2">
