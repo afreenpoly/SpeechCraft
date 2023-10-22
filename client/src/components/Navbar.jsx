@@ -11,7 +11,10 @@ const Navbar = () => {
   return (
     <nav className="bg-blue-500 p-4">
       <div className="flex justify-between items-center">
-        <div className="text-white text-xl">My App</div>
+        <Link to="/user" className="text-white text-xl">
+          Speech Craft
+        </Link>
+
         <div className="relative">
           <button
             onClick={toggleProfileDropdown}

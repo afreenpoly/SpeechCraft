@@ -16,7 +16,7 @@ function Dashboard() {
       <div className="border-b border-black border-4 my-6" />
 
       {/* Second Section */}
-      <h2 className="text-2xl font-semibold text-center my-6"> Practise</h2>
+      <h2 className="text-2xl font-semibold text-center my-6"> Practice</h2>
       <div className="flex space-x-36 justify-center">
         <Card
           name="Flash Card"
