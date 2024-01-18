@@ -1,4 +1,4 @@
-import { React,useState } from "react";
+import { React, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -8,6 +8,7 @@ function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const firstName = document.getElementById("firstName").value;
     const lastName = document.getElementById("lastName").value;
     const dob = document.getElementById("dob").value;
@@ -24,8 +25,17 @@ function Register() {
         password: password,
         known_language: knownLanguage,
       })
-      .then(() => {
-        navigate("/user");
+      .then((response) => response.data)
+      .then((data) => {
+        if (data.user_id) {
+          alert(data.message);
+          navigate("/user");
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 

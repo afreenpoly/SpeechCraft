@@ -28,6 +28,10 @@ def register():
     email = data['email']
     password = data['password']
 
+    existing_user = collection.find_one({'email': email})
+    if existing_user:
+        return jsonify({"message": "User already exists"})
+
     user_data = {
         'first_name': first_name,
         'last_name': last_name,
