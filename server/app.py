@@ -1,17 +1,21 @@
 # app.py
-
+import os
 from flask import Flask, request, jsonify
 from flask_pymongo import PyMongo
+from pymongo import MongoClient
 
 app = Flask(__name__)
-app.config['MONGO_URI'] = 'mongodb://localhost:27017/SpeechCraft'
-mongo = PyMongo(app)
+
+MONGO_URI = f"mongodb+srv://afreenpoly:" + os.environ.get('MONGO_PASSWORD') + "@studetails.ebwix9o.mongodb.net/"
+# Connect to MongoDB
+client = MongoClient(MONGO_URI)
 
 @app.route('/register', methods=['POST'])
 def register():
-
+    
+    db = client.Studetails
     # Define the collection name
-    collection_name = "info"
+    collection= db.Information
     data = request.json
     first_name = data['first_name']
     last_name = data['last_name']
@@ -26,8 +30,8 @@ def register():
     }
 
     # Access the specified collection within the database
-    users = mongo.db[collection_name]
-    user_id = users.insert_one(user_data).inserted_id
+    
+    user_id = collection.insert_one(user_data)
 
     return jsonify({"message": "User registered successfully", "user_id": str(user_id)})
 
