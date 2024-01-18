@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 
 import { useNavigate } from "react-router-dom";
@@ -7,7 +8,26 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate("/user");
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    axios
+      .post("/checkAuthorization", {
+        email: email,
+        password: password,
+      })
+      .then((response) => response.data)
+      .then((data) => {
+        if (data.user) {
+          alert(data.message);
+          navigate("/user");
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleClick = () => {
@@ -34,11 +54,13 @@ function Login() {
             className="bg-white p-4 rounded-lg shadow-md justify-center justify-items-center text-center"
           >
             <input
+              id="email"
               type="email"
               className="w-full px-3 py-2 border rounded-md focus:ring focus:ring-blue-400"
               placeholder="Email address or phone number"
             />
             <input
+              id="password"
               type="password"
               className="w-full mt-3 px-3 py-2 border rounded-md focus:ring focus:ring-blue-400"
               placeholder="Password"
