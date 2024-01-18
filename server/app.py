@@ -21,12 +21,16 @@ def register():
     last_name = data['last_name']
     dob = data['dob']
     known_language = data['known_language']
+    email = data['email']
+    password = data['password']
 
     user_data = {
         'first_name': first_name,
         'last_name': last_name,
         'dob': dob,
-        'known_language': known_language
+        'known_language': known_language,
+        'email': email,
+        'password': password
     }
 
     # Access the specified collection within the database
