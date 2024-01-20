@@ -1,11 +1,34 @@
 import React, { useState } from "react";
-import { Modal, FloatButton } from "antd";
+import { Modal, FloatButton, Divider, Calendar } from "antd";
 import Card from "../../../components/Card";
 import { PlusCircleOutlined } from "@ant-design/icons";
 
 const Dashboard = () => {
   const [isModelOpen, setIsModelOpen] = useState(true);
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [selectedLanguages, setSelectedLanguages] = useState([]);
+
+  const languages = [
+    {
+      name: "English",
+      color: "bg-cyan-500 ",
+    },
+    {
+      name: "French",
+      color: "bg-blue-500",
+    },
+    {
+      name: "Spanish",
+      color: "bg-green-500",
+    },
+    {
+      name: "Hindi",
+      color: "bg-red-500",
+    },
+    {
+      name: "Malayalam",
+      color: "bg-violet-500",
+    },
+  ];
 
   const openModel = () => {
     setIsModelOpen(true);
@@ -15,22 +38,51 @@ const Dashboard = () => {
     setIsModelOpen(false);
   };
 
-  const handleOptionSelect = (option) => {
-    setSelectedOptions([...selectedOptions, option]); // Add the selected option to the array
+  const handleLanguagesSelect = (language) => {
+    // If it doesn't exist, update the state to include the new item
+    if (!selectedLanguages.includes(language)) {
+      setSelectedLanguages([...selectedLanguages, language]); // Add the selected language to the array
+    } else {
+      alert("Language already added");
+    }
     closeModel();
+  };
+
+  const setColor = (name) => {
+    const language = languages.find((language) => language.name === name);
+    return language ? language.color : ""; // Return the color if found, otherwise an empty string
   };
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold mb-4">Languages</h1>
+      <div>
+        <h1 className="text-2xl font-bold mb-4">Languages</h1>
 
-      {selectedOptions.length > 0 && (
-        <div className="mt-4 grid grid-cols-4 gap-4">
-          {selectedOptions.map((option, index) => (
-            <Card name={option} color="green" link="/user/linguistics" />
-          ))}
+        {selectedLanguages.length > 0 && (
+          <div className="mt-4 grid grid-cols-4 gap-y-14">
+            {selectedLanguages.map((language, index) => (
+              <Card
+                name={language}
+                color={setColor(language)}
+                link={"/user/linguistics/" + language}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Divider Line */}
+      <Divider className="border-2 my-5" />
+
+      <div>
+        <h1 className="text-2xl font-bold mb-4">Stats</h1>
+        <div>
+          <div className={`w-80 border-1 border-solid `}>
+            <Calendar fullscreen={false} />
+          </div>
         </div>
-      )}
+      </div>
+
       <Modal
         title="Select a Language:"
         open={isModelOpen}
@@ -39,30 +91,16 @@ const Dashboard = () => {
       >
         <div className="bg-white p-4 rounded-lg z-50">
           <ul>
-            <li>
-              <button
-                onClick={() => handleOptionSelect("English")}
-                className="text-blue-500 hover:text-blue-700 cursor-pointer"
-              >
-                English
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => handleOptionSelect("Spanish")}
-                className="text-blue-500 hover:text-blue-700 cursor-pointer"
-              >
-                Spanish
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => handleOptionSelect("French")}
-                className="text-blue-500 hover:text-blue-700 cursor-pointer"
-              >
-                French
-              </button>
-            </li>
+            {languages.map((language, index) => (
+              <li key={index}>
+                <button
+                  onClick={() => handleLanguagesSelect(language.name)}
+                  className="text-blue-500 hover:text-blue-700 cursor-pointer"
+                >
+                  {language.name}
+                </button>
+              </li>
+            ))}
           </ul>
         </div>
       </Modal>

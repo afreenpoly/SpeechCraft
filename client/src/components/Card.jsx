@@ -10,7 +10,7 @@ const Card = ({ name, color, link }) => {
 
   return (
     <div
-      className={`bg-${color}-500 h-44 w-44 rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 ease-in-out flex flex-col justify-center items-center`}
+      className={`${color} h-44 w-44 rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300 ease-in-out flex flex-col justify-center items-center`}
       onClick={handleCardClick}
       style={{ cursor: "pointer" }}
     >
