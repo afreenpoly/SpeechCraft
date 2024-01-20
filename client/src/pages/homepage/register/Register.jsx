@@ -1,42 +1,59 @@
-import { React, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function Register() {
+const Register = () => {
+  const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
+    dob: "",
+    email: "",
+    password: "",
+    known_language: "",
+  });
+  const [disabled, setDisabled] = useState(false);
+
   const navigate = useNavigate();
-  const [dob, setDob] = useState(""); // State to hold the value of Date of Birth
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const firstName = document.getElementById("firstName").value;
-    const lastName = document.getElementById("lastName").value;
-    const dob = document.getElementById("dob").value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const knownLanguage = document.getElementById("knownLanguage").value;
-
-    axios
-      .post("/register", {
-        first_name: firstName,
-        last_name: lastName,
-        dob: dob,
-        email: email,
-        password: password,
-        known_language: knownLanguage,
-      })
-      .then((response) => response.data)
-      .then((data) => {
-        if (data.user_id) {
-          alert(data.message);
-          navigate("/user");
-        } else {
-          alert(data.message);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
+    try {
+      setDisabled(true);
+      await axios
+        .post("/register", formData)
+        .then((response) => response.data)
+        .then((data) => {
+          if (data.user_id) {
+            alert(data.message);
+            navigate("/user");
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setFormData({
+        first_name: "",
+        last_name: "",
+        dob: "",
+        email: "",
+        password: "",
+        known_language: "",
       });
+      setDisabled(false);
+    }
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
   return (
@@ -55,6 +72,9 @@ function Register() {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="firstName"
               type="text"
+              name="first_name"
+              value={formData.first_name}
+              onChange={handleChange}
               placeholder="First Name"
               required
             />
@@ -70,6 +90,9 @@ function Register() {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="lastName"
               type="text"
+              value={formData.last_name}
+              onChange={handleChange}
+              name="last_name"
               placeholder="Last Name"
               required
             />
@@ -86,8 +109,9 @@ function Register() {
               id="dob"
               type="text"
               placeholder="Date of Birth"
-              value={dob}
-              onChange={(e) => setDob(e.target.value)}
+              value={formData.dob}
+              onChange={handleChange}
+              name="dob"
               onFocus={(e) => (e.currentTarget.type = "date")}
               onBlur={(e) => (e.currentTarget.type = "text")}
               required
@@ -105,6 +129,9 @@ function Register() {
               id="email"
               type="email"
               placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              name="email"
               required
             />
           </div>
@@ -119,6 +146,9 @@ function Register() {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="password"
               type="password"
+              value={formData.password}
+              onChange={handleChange}
+              name="password"
               placeholder="Password"
               required
             />
@@ -133,6 +163,9 @@ function Register() {
             <select
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="knownLanguage"
+              value={formData.known_language}
+              onChange={handleChange}
+              name="known_language"
               required
             >
               <option value="" disabled selected>
@@ -150,6 +183,7 @@ function Register() {
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
+              disabled={disabled}
             >
               Sign Up
             </button>
@@ -158,6 +192,6 @@ function Register() {
       </div>
     </div>
   );
-}
+};
 
 export default Register;
