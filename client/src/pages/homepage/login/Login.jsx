@@ -20,8 +20,7 @@ const Login = () => {
         .then((response) => response.data)
         .then((data) => {
           if (data.user_id) {
-            sessionStorage.setItem("user_id", JSON.stringify(data.user_id));
-            navigate("/user");
+            navigate("/user/" + data.user_id);
           } else {
             alert(data.message);
           }

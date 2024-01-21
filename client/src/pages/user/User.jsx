@@ -14,8 +14,10 @@ const User = () => {
       <div className="min-h-[80vh]">
         <Routes>
           <Route index element={<Dashboard />}></Route>
-          <Route path="/" element={<Dashboard />}></Route>
-          <Route path="/linguistics/*" element={<Linguistics />}></Route>
+          <Route
+            path="/linguistics/:language"
+            element={<Linguistics />}
+          ></Route>
           <Route path="/learning/*" element={<Learning />}></Route>
           <Route path="/challenges/*" element={<Challenges />}></Route>
           <Route path="/profile" element={<Profile />}></Route>

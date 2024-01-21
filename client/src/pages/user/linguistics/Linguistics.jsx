@@ -1,13 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Card, Calendar, Divider } from "antd";
 
 const Linguistics = () => {
+  const { user_id } = useParams();
   return (
     <div className="pb-4">
       {/* First Section */}
       <h2 className="text-2xl font-semibold text-center mb-4">Learning</h2>
       <div className="grid grid-cols-3 justify-center justify-items-center">
-        <Link to={"/user/learning/alphabets"}>
+        <Link to={"/user/" + user_id + "/learning/alphabets"}>
           <Card
             hoverable
             style={{
@@ -18,7 +19,7 @@ const Linguistics = () => {
             <div className="text-2xl text-center font-semibold">Alphabets</div>
           </Card>
         </Link>
-        <Link to={"/user/learning/words"}>
+        <Link to={"/user/" + user_id + "/learning/words"}>
           <Card
             hoverable
             style={{
@@ -29,7 +30,7 @@ const Linguistics = () => {
             <div className="text-2xl text-center font-semibold">Words</div>
           </Card>
         </Link>
-        <Link to={"/user/learning/words"}>
+        <Link to={"/user/" + user_id + "/learning/words"}>
           <Card
             hoverable
             style={{
@@ -48,7 +49,7 @@ const Linguistics = () => {
       {/* Second Section */}
       <h2 className="text-2xl font-semibold text-center my-6"> Practice</h2>
       <div className="grid grid-cols-3 justify-center justify-items-center">
-        <Link to={"/user/challenges/flashcard"}>
+        <Link to={"/user/" + user_id + "/challenges/flashcard"}>
           <Card
             hoverable
             style={{
@@ -60,7 +61,7 @@ const Linguistics = () => {
           </Card>
         </Link>
 
-        <Link to={"/user/challenges/multiplayer"}>
+        <Link to={"/user/" + user_id + "/challenges/multiplayer"}>
           <Card
             hoverable
             style={{

@@ -3,9 +3,10 @@ import { Modal, FloatButton, Divider, Calendar } from "antd";
 import Card from "../../../components/Card";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const Dashboard = () => {
-  const [userInfo, setUserInfo] = useState("");
+  const { user_id } = useParams();
   const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [isModelOpen, setIsModelOpen] = useState(false);
 
@@ -39,7 +40,6 @@ const Dashboard = () => {
         .then((response) => response.data)
         .then((data) => {
           if (data.user) {
-            setUserInfo(data.user);
             setSelectedLanguages(data.user.languages);
             if (data.user.languages.length > 0) {
               setIsModelOpen(false);
@@ -59,10 +59,8 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    const user_id = JSON.parse(sessionStorage.getItem("user_id"));
-    console.log(user_id);
     getUserInfo(user_id);
-  }, []);
+  }, [user_id]);
 
   const openModel = () => {
     setIsModelOpen(true);
@@ -77,7 +75,7 @@ const Dashboard = () => {
     if (!selectedLanguages.includes(language)) {
       try {
         const request = {
-          user_id: userInfo.user_id,
+          user_id: user_id,
           languages: [...selectedLanguages, language],
         };
 
@@ -86,7 +84,9 @@ const Dashboard = () => {
           .then((response) => response.data)
           .then((data) => {
             if (data.user_id) {
-              getUserInfo(data.user_id);
+              if (user_id === data.user_id) {
+                getUserInfo(user_id);
+              }
             } else {
             }
           })
@@ -120,7 +120,7 @@ const Dashboard = () => {
                 key={index}
                 name={language}
                 color={setColor(language)}
-                link={"/user/linguistics/" + language}
+                link={"/user/" + user_id + "/linguistics/" + language}
               />
             ))}
           </div>
