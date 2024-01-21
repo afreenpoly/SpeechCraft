@@ -5,12 +5,8 @@ import { PlusCircleOutlined } from "@ant-design/icons";
 import axios from "axios";
 
 const Dashboard = () => {
-  const [userInfo, setUserInfo] = useState(
-    JSON.parse(sessionStorage.getItem("user_info"))
-  );
-  const [selectedLanguages, setSelectedLanguages] = useState(
-    JSON.parse(sessionStorage.getItem("user_info")).languages
-  );
+  const [userInfo, setUserInfo] = useState("");
+  const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [isModelOpen, setIsModelOpen] = useState(false);
 
   const languages = [
@@ -118,7 +114,7 @@ const Dashboard = () => {
         <h1 className="text-2xl font-bold mb-4">Languages</h1>
 
         {selectedLanguages.length > 0 && (
-          <div className="mt-4 grid grid-cols-4 gap-y-14">
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8">
             {selectedLanguages.map((language, index) => (
               <Card
                 key={index}
@@ -136,7 +132,7 @@ const Dashboard = () => {
 
       <div>
         <h1 className="text-2xl font-bold mb-4">Stats</h1>
-        <div className="grid grid-cols-2">
+        <div className=" grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="">None</div>
           <div className={`w-80 border-1 border-solid `}>
             <Calendar fullscreen={false} />

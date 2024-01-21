@@ -53,7 +53,7 @@ const FlashCard = () => {
   return (
     <div className="container mx-auto p-4 text-center">
       <h1 className="text-4xl font-semibold my-4">
-        {showFrenchTranslation ? "English Word" : "French Translation"}
+        {showFrenchTranslation ? "English Word" : "French Word"}
       </h1>
       <div className="text-2xl my-4 flex items-center justify-center">
         <SpinningCard
