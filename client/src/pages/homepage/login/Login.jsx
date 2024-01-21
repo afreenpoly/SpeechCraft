@@ -19,8 +19,8 @@ const Login = () => {
         .post("/checkAuthorization", formData)
         .then((response) => response.data)
         .then((data) => {
-          if (data.user) {
-            console.log(data.user);
+          if (data.user_id) {
+            sessionStorage.setItem("user_id", JSON.stringify(data.user_id));
             navigate("/user");
           } else {
             alert(data.message);
