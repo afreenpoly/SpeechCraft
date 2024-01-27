@@ -175,6 +175,7 @@ const Register = () => {
               <option value="spanish">Spanish</option>
               <option value="french">French</option>
               <option value="malayalam">Malayalam</option>
+              <option value="hindi">Hindi</option>
               {/* Add more options as needed */}
             </select>
           </div>
