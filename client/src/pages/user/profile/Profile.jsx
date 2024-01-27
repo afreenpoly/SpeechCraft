@@ -61,18 +61,21 @@ const Friends = () => {
   };
 
   return (
-    <div>
-      <h2>Challenges</h2>
+    <div className="p-4">
+      <h2 className="text-2xl font-bold mb-4">Challenges</h2>
 
-      <div>
-        <h3>Friend Requests</h3>
+      <div className="mb-8">
+        <h3 className="text-lg font-semibold mb-2">Friend Requests</h3>
         {friendRequests.length === 0 ? (
           <p>No friend requests</p>
         ) : (
           friendRequests.map((request) => (
-            <div key={request.user_id}>
+            <div key={request.user_id} className="mb-2">
               <p>{request.user_id} sent you a friend request</p>
-              <button onClick={() => acceptFriendRequest(request.user_id)}>
+              <button
+                className="bg-blue-500 text-white px-4 py-2 rounded"
+                onClick={() => acceptFriendRequest(request.user_id)}
+              >
                 Accept
               </button>
             </div>
@@ -81,16 +84,22 @@ const Friends = () => {
       </div>
 
       <div>
-        <h3>Send Friend Request</h3>
-        <label>
+        <h3 className="text-lg font-semibold mb-2">Send Friend Request</h3>
+        <label className="block mb-2">
           Friend's User ID:
           <input
+            className="border border-gray-300 rounded px-4 py-2 w-full"
             type="text"
             value={friendUserId}
             onChange={(e) => setFriendUserId(e.target.value)}
           />
         </label>
-        <button onClick={sendFriendRequest}>Send Friend Request</button>
+        <button
+          className="bg-green-500 text-white px-4 py-2 rounded"
+          onClick={sendFriendRequest}
+        >
+          Send Friend Request
+        </button>
       </div>
     </div>
   );
