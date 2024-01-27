@@ -76,11 +76,11 @@ const Dashboard = () => {
       try {
         const request = {
           user_id: user_id,
-          languages: [...selectedLanguages, language],
+          language: language,
         };
 
         await axios
-          .post("/updateLanguageList", request)
+          .post("/addLangauge", request)
           .then((response) => response.data)
           .then((data) => {
             if (data.user_id) {

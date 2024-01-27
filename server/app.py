@@ -43,7 +43,9 @@ def register():
             'email': email,
             'password': password,
             'languages': [],
-            'stats': {}
+            'stats': {},
+            'friend_requests': [],
+            'friends':[]
         }
 
         # Access the specified collection within the database
@@ -83,6 +85,11 @@ def getUserInfo():
     user = collection.find_one({'_id': ObjectId(user_id)})
 
     if user:
+        # get list of languages without thier values
+        languagesList = []
+        for lang in user.get('languages'):
+            languagesList.extend(lang.keys())
+
         user_details = {
             'user_id': user_id,
             'first_name': user.get('first_name'),
@@ -90,7 +97,7 @@ def getUserInfo():
             'dob':user.get('dob'),
             'known_language':user.get('known_language'),
             'email': user.get('email'),
-            'languages': user.get('languages'),
+            'languages': languagesList,
             'stats': user.get('stats')
         }
         return jsonify({"message": "Authorization successful", "user":user_details})
@@ -98,27 +105,98 @@ def getUserInfo():
         return jsonify({"message": "Authorization failed"})
 
 
-@app.route('/updateLanguageList', methods=['POST'])
-def updateLanguageList():
+@app.route('/addLangauge', methods=['POST'])
+def addLangauge():
     db = client.Studetails
     collection = db.Information
 
     data = request.json
     user_id = data['user_id']
-    languages = data['languages']
+    language = data['language']
 
+    user = collection.find_one({'_id': ObjectId(user_id)})
+
+    if user:
+        # Add the language to the languages array with value 1
+        languages = user.get('languages')
+        languages.append({language:1})
+
+        updated_user = collection.update_one({'_id': ObjectId(user_id)},{"$set": {"languages": languages}})
+        if updated_user.modified_count > 0:
+            return jsonify({"message": "Language added successfully", "user_id": user_id})
+        else:
+            return jsonify({"message": "Error in updating languages list"})
+    else:
+        return jsonify({"message": "Unauthorized user"})
+
+@app.route('/getWordPair', methods=['POST'])
+def getWordPair():
+    db = client.Studetails
+    collection = db.Information
+
+    data = request.json
+    user_id = data['user_id']
+    language = data['language']
+    status = data['status']
 
     # Query the database to check if the provided email and languages match any user
     user = collection.find_one({'_id': ObjectId(user_id)})
 
     if user:
-        updated_user = collection.update_one({"_id": ObjectId(user_id)},{"$set": {"languages": languages}})
-        if updated_user.modified_count > 0:
-            return jsonify({"message": "Updated languages list", "user_id":user_id})
-        else:
-            return jsonify({"message": "Error in updating languages list"})
+        index = -1
+        for lang in user.get('languages'):
+            if language in lang:
+                # If language exists, store its value
+                index = lang[language]
+
+                if status == 1:
+                    lang[language] += 1
+                    collection.update_one({'_id': ObjectId(user_id)},{"$set": {"languages": user.get('languages')}})
+                    index += 1
+                
+        newWord = "fetch Word from "+language+"DB"
+        knownWord ="fetch Known Word from "+language+"DB"
+
+        # Open the file
+        try:
+            with open("languages\\"+ language + ".txt", "r",  encoding="utf-8") as file:
+                # Read all lines into a list
+                lines = file.readlines()
+                if len(lines) >= index:
+                    # Print the word on the index-th line (assuming each line contains a single word)
+                    newWord =  lines[index-1].strip()
+                else:
+                    print("There is no more words")
+        except FileNotFoundError:
+            print("File for", language, "not found")
+        
+        
+        try:
+            with open("languages\\"+ user.get('known_language') + ".txt", "r",  encoding="utf-8") as file:
+                # Read all lines into a list
+                lines = file.readlines()
+                if len(lines) >= index:
+                    # Print the word on the index-th line (assuming each line contains a single word)
+                    knownWord =  lines[index-1].strip()
+                else:
+                    print("There is no more words")
+        except FileNotFoundError:
+            print("File for", language, "not found")
+        
+
+        """ for langObj in languagesList:
+            if language in langObj:
+                langObj[language] = langObj.get(language, 0) + 1
+                collection.update_one({'_id': user_id}, {'$set': {'languages': languagesList}}) """
+            
+        wordPair = {
+            'newWord': newWord,
+            'knownWord':knownWord,
+        }
+        return jsonify({"message": "Updated languages list", "wordPair":wordPair})
     else:
         return jsonify({"message": "Unauthorized user"})
+
 
 @app.route('/sendFriendRequest', methods=['POST'])
 def sendFriendRequest():
