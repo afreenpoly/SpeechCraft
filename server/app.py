@@ -5,6 +5,7 @@ from flask_pymongo import PyMongo
 from pymongo import MongoClient
 from bson import ObjectId
 from dotenv import load_dotenv
+import random
 
 # Load variables from the .env file
 load_dotenv()
@@ -182,12 +183,6 @@ def getWordPair():
                     print("There is no more words")
         except FileNotFoundError:
             print("File for", language, "not found")
-        
-
-        """ for langObj in languagesList:
-            if language in langObj:
-                langObj[language] = langObj.get(language, 0) + 1
-                collection.update_one({'_id': user_id}, {'$set': {'languages': languagesList}}) """
             
         wordPair = {
             'newWord': newWord,
@@ -197,6 +192,50 @@ def getWordPair():
     else:
         return jsonify({"message": "Unauthorized user"})
 
+
+@app.route('/getFlashCardWordPair', methods=['POST'])
+def getFlashCardWordPair():
+    db = client.Studetails
+    collection = db.Information
+
+    data = request.json
+    user_id = data['user_id']
+    language = data['language']
+
+    # Query the database to check if the provided email and languages match any user
+    user = collection.find_one({'_id': ObjectId(user_id)})
+
+    if user:
+        newWord = "fetching Word from "+language+"DB"
+        knownWord ="fetching Known Word from "+language+"DB"
+
+        index = -1
+
+        # Open the file
+        try:
+            with open("languages\\"+ language + ".txt", "r",  encoding="utf-8") as file:
+                words = file.readlines()
+                num_lines = len(words)
+                index = random.randint(0, num_lines)
+                newWord = words[index].strip()
+        except FileNotFoundError:
+            print("File for", language, "not found")
+        
+        try:
+            with open("languages\\"+ user.get('known_language') + ".txt", "r",  encoding="utf-8") as file:
+                words = file.readlines()
+                knownWord =  words[index].strip()
+        except FileNotFoundError:
+            print("File for", language, "not found")
+            
+        wordPair = {
+            'newWord': newWord,
+            'knownWord':knownWord,
+        }
+        print(wordPair)
+        return jsonify({"message": "Updated languages list", "wordPair":wordPair})
+    else:
+        return jsonify({"message": "Unauthorized user"})
 
 @app.route('/sendFriendRequest', methods=['POST'])
 def sendFriendRequest():
