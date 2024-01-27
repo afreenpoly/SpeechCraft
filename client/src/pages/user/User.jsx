@@ -18,8 +18,11 @@ const User = () => {
             path="/linguistics/:language"
             element={<Linguistics />}
           ></Route>
-          <Route path="/learning/*" element={<Learning />}></Route>
-          <Route path="/challenges/*" element={<Challenges />}></Route>
+          <Route path="/learning/:language/*" element={<Learning />}></Route>
+          <Route
+            path="/challenges/:language/*"
+            element={<Challenges />}
+          ></Route>
           <Route path="/profile" element={<Profile />}></Route>
         </Routes>
       </div>
